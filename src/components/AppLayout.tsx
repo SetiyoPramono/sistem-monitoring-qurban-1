@@ -15,9 +15,9 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const isAdmin = isAuthenticated();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-green-100">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-green-50 to-green-100">
       <header className="sticky top-0 z-10 w-full bg-white border-b shadow-sm">
-        <div className="container flex h-16 items-center">
+        <div className="container flex h-16 items-center px-4 md:px-6">
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" className="mr-4 md:hidden">
@@ -45,7 +45,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
               </nav>
             </SheetContent>
           </Sheet>
-          <Link to="/" className="flex items-center gap-2 font-bold text-lg">
+          <Link to="/" className="flex items-center gap-2 font-bold text-base sm:text-lg truncate">
             Sistem Monitoring Qurban
           </Link>
           <nav className="ml-auto hidden md:flex gap-4 font-medium">
@@ -67,11 +67,11 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           </nav>
         </div>
       </header>
-      <main className="container py-6">
+      <main className="container py-6 px-4 md:px-6 flex-1">
         {children}
       </main>
-      <footer className="mt-auto py-6 border-t bg-white">
-        <div className="container text-center text-sm text-gray-500">
+      <footer className="py-6 border-t bg-white">
+        <div className="container text-center text-sm text-gray-500 px-4 md:px-6">
           &copy; {new Date().getFullYear()} Sistem Monitoring Qurban. All rights reserved.
         </div>
       </footer>

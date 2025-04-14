@@ -1,7 +1,8 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Chart, registerables } from 'chart.js';
 import { QurbanData } from '@/types';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 Chart.register(...registerables);
 
@@ -12,8 +13,13 @@ interface PieChartProps {
 const PieChart: React.FC<PieChartProps> = ({ data }) => {
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstance = useRef<Chart | null>(null);
+  const isMobile = useIsMobile();
+  const [chartHeight, setChartHeight] = useState<string>("400px");
 
   useEffect(() => {
+    // Adjust chart height based on screen size
+    setChartHeight(isMobile ? "300px" : "400px");
+    
     if (!chartRef.current) return;
 
     // Calculate values for the chart
@@ -53,12 +59,16 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false,
           plugins: {
             legend: {
-              position: 'bottom',
+              position: isMobile ? 'bottom' : 'right',
+              align: isMobile ? 'center' : 'center',
               labels: {
+                boxWidth: isMobile ? 12 : 40,
+                padding: isMobile ? 8 : 20,
                 font: {
-                  size: 12
+                  size: isMobile ? 10 : 12
                 }
               }
             },
@@ -83,9 +93,13 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
         chartInstance.current.destroy();
       }
     };
-  }, [data]);
+  }, [data, isMobile]);
 
-  return <canvas ref={chartRef} />;
+  return (
+    <div style={{ height: chartHeight, width: "100%" }}>
+      <canvas ref={chartRef} />
+    </div>
+  );
 };
 
 export default PieChart;

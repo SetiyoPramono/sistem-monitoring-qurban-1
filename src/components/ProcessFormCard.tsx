@@ -41,25 +41,26 @@ const ProcessFormCard = ({
   };
 
   return (
-    <Card className="border-t-4" style={{ borderTopColor: color }}>
+    <Card className="border-t-4 h-full" style={{ borderTopColor: color }}>
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
+        <CardTitle className="text-lg sm:text-xl break-words">{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor={`${title}-total`}>Total</Label>
+            <Label htmlFor={`${title}-total`} className="text-sm sm:text-base">Total</Label>
             <Input
               id={`${title}-total`}
               type="number"
               min="0"
               value={newTotal}
               onChange={(e) => setNewTotal(e.target.value)}
+              className="text-sm sm:text-base"
             />
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor={`${title}-completed`}>Jumlah Selesai</Label>
+            <Label htmlFor={`${title}-completed`} className="text-sm sm:text-base">Jumlah Selesai</Label>
             <div className="flex space-x-2">
               <Input
                 id={`${title}-completed`}
@@ -68,11 +69,13 @@ const ProcessFormCard = ({
                 max={total}
                 value={newCompleted}
                 onChange={(e) => setNewCompleted(e.target.value)}
+                className="text-sm sm:text-base"
               />
               <Button 
                 type="button" 
                 onClick={incrementCompleted}
                 variant="outline"
+                className="flex-shrink-0"
               >
                 +1
               </Button>

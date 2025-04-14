@@ -13,15 +13,15 @@ const ProgressBar = ({ value, max, color, label, className }: ProgressBarProps) 
   const percentage = max > 0 ? Math.min(Math.round((value / max) * 100), 100) : 0;
   
   return (
-    <div className={cn("w-full bg-gray-200 rounded-full h-6 overflow-hidden", className)}>
+    <div className={cn("w-full bg-gray-200 rounded-full h-4 sm:h-6 overflow-hidden", className)}>
       <div 
-        className="h-full flex items-center justify-center text-white text-sm font-medium transition-all duration-300 ease-in-out"
+        className="h-full flex items-center justify-center text-white text-xs sm:text-sm font-medium transition-all duration-300 ease-in-out"
         style={{ 
           width: `${percentage}%`, 
           backgroundColor: color 
         }}
       >
-        {label || `${percentage}%`}
+        {percentage > 10 ? (label || `${percentage}%`) : ""}
       </div>
     </div>
   );

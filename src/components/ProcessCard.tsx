@@ -18,14 +18,14 @@ const ProcessCard = ({
   color
 }: ProcessCardProps) => {
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader className="pb-2">
-        <CardTitle className="text-xl">{title} (Total: {total})</CardTitle>
+        <CardTitle className="text-lg sm:text-xl break-words">{title} (Total: {total})</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex justify-between mb-1">
-          <span className="font-medium">{label}:</span>
-          <span className="font-bold">{completed} bungkus</span>
+        <div className="flex flex-wrap justify-between mb-1 gap-1">
+          <span className="font-medium text-sm sm:text-base">{label}:</span>
+          <span className="font-bold text-sm sm:text-base">{completed} bungkus</span>
         </div>
         <ProgressBar value={completed} max={total} color={color} />
       </CardContent>

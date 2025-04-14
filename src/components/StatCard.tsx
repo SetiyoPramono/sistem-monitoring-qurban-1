@@ -24,15 +24,15 @@ const StatCard = ({
   slaughteredColor
 }: StatCardProps) => {
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader className="pb-2">
-        <CardTitle className="text-xl">{title} (Total: {total})</CardTitle>
+        <CardTitle className="text-lg sm:text-xl break-words">{title} (Total: {total})</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
-          <div className="flex justify-between mb-1">
-            <span className="font-medium">{outLabel}:</span>
-            <span className="font-bold">{outCount} ekor</span>
+          <div className="flex flex-wrap justify-between mb-1 gap-1">
+            <span className="font-medium text-sm sm:text-base">{outLabel}:</span>
+            <span className="font-bold text-sm sm:text-base">{outCount} ekor</span>
           </div>
           <ProgressBar 
             value={outCount} 
@@ -42,9 +42,9 @@ const StatCard = ({
         </div>
         
         <div>
-          <div className="flex justify-between mb-1">
-            <span className="font-medium">{slaughteredLabel}:</span>
-            <span className="font-bold">{slaughteredCount} ekor</span>
+          <div className="flex flex-wrap justify-between mb-1 gap-1">
+            <span className="font-medium text-sm sm:text-base">{slaughteredLabel}:</span>
+            <span className="font-bold text-sm sm:text-base">{slaughteredCount} ekor</span>
           </div>
           <ProgressBar 
             value={slaughteredCount} 
