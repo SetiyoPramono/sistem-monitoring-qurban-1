@@ -4,9 +4,12 @@ import AppLayout from "@/components/AppLayout";
 import AdminFormCard from "@/components/AdminFormCard";
 import ProcessFormCard from "@/components/ProcessFormCard";
 import { Button } from "@/components/ui/button";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, LogOut } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
+import { logout } from "@/utils/auth";
+import { useNavigate } from "react-router-dom";
+import { toast } from "@/components/ui/sonner";
 
 const Admin = () => {
   const { 
@@ -19,6 +22,16 @@ const Admin = () => {
     updateDistribution,
     resetToDefaults
   } = useQurban();
+  
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    toast.success("Logout successful", {
+      description: "You have been logged out successfully"
+    });
+    navigate("/login");
+  };
 
   if (isLoading) {
     return (
@@ -72,11 +85,21 @@ const Admin = () => {
 
   return (
     <AppLayout>
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold mb-2">Admin Dashboard</h1>
-        <p className="text-gray-600">
-          Gunakan halaman ini untuk mengelola data monitoring qurban.
-        </p>
+      <div className="mb-6 flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-bold mb-2">Admin Dashboard</h1>
+          <p className="text-gray-600">
+            Gunakan halaman ini untuk mengelola data monitoring qurban.
+          </p>
+        </div>
+        <Button 
+          variant="outline" 
+          className="flex items-center gap-2" 
+          onClick={handleLogout}
+        >
+          <LogOut className="h-4 w-4" />
+          Logout
+        </Button>
       </div>
 
       <Alert className="mb-6">

@@ -5,11 +5,16 @@ import PieChart from "@/components/PieChart";
 import StatCard from "@/components/StatCard";
 import ProcessCard from "@/components/ProcessCard";
 import Clock from "@/components/Clock";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { User } from "lucide-react";
+import { isAuthenticated } from "@/utils/auth";
 
 const Dashboard = () => {
   const { data, isLoading } = useQurban();
+  const isAdmin = isAuthenticated();
 
   if (isLoading) {
     return (
@@ -56,6 +61,16 @@ const Dashboard = () => {
                 <PieChart data={data} />
                 <Clock />
               </CardContent>
+              {!isAdmin && (
+                <CardFooter className="flex justify-center pb-6">
+                  <Link to="/login">
+                    <Button variant="outline" size="sm" className="flex items-center gap-2">
+                      <User className="h-4 w-4" />
+                      Login Admin
+                    </Button>
+                  </Link>
+                </CardFooter>
+              )}
             </Card>
           </div>
         </div>
