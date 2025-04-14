@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,22 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// Custom colors for Qurban app
+				goat: {
+					DEFAULT: '#4caf50',
+					light: '#8bc34a'
+				},
+				sheep: {
+					DEFAULT: '#ff9800',
+					light: '#f57c00'
+				},
+				cow: {
+					DEFAULT: '#2196f3',
+					light: '#03a9f4'
+				},
+				packing: '#ff5722',
+				distribution: '#f44336'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
