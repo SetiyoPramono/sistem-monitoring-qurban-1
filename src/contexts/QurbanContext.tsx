@@ -1,34 +1,59 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { QurbanData, AnimalStats } from '@/types';
-import { loadData, saveData } from '@/lib/db';
+import { loadData, saveData, resetData } from '@/lib/db';
 import { toast } from '@/hooks/use-toast';
 
 interface QurbanContextType {
   data: QurbanData;
-  updateGoats: (stats: Partial<AnimalStats>) => void;
-  updateSheep: (stats: Partial<AnimalStats>) => void;
-  updateCows: (stats: Partial<AnimalStats>) => void;
-  updatePackaging: (total: number | undefined, completed: number | undefined) => void;
-  updateDistribution: (total: number | undefined, completed: number | undefined) => void;
-  resetToDefaults: () => void;
+  isLoading: boolean;
+  updateGoats: (stats: Partial<AnimalStats>) => Promise<void>;
+  updateSheep: (stats: Partial<AnimalStats>) => Promise<void>;
+  updateCows: (stats: Partial<AnimalStats>) => Promise<void>;
+  updatePackaging: (total: number | undefined, completed: number | undefined) => Promise<void>;
+  updateDistribution: (total: number | undefined, completed: number | undefined) => Promise<void>;
+  resetToDefaults: () => Promise<void>;
 }
 
 const QurbanContext = createContext<QurbanContextType | undefined>(undefined);
 
 export const QurbanProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [data, setData] = useState<QurbanData>(loadData());
+  const [data, setData] = useState<QurbanData>({
+    goats: { total: 0, outOfPen: 0, slaughtered: 0 },
+    sheep: { total: 0, outOfPen: 0, slaughtered: 0 },
+    cows: { total: 0, outOfPen: 0, slaughtered: 0 },
+    packaging: { total: 0, completed: 0 },
+    distribution: { total: 0, completed: 0 }
+  });
+  const [isLoading, setIsLoading] = useState(true);
 
+  // Load initial data
   useEffect(() => {
-    // Save data whenever it changes
-    saveData(data);
-  }, [data]);
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const qurbanData = await loadData();
+        setData(qurbanData);
+      } catch (error) {
+        console.error("Failed to load data:", error);
+        toast({
+          title: "Error Loading Data",
+          description: "Failed to load qurban data from the database.",
+          variant: "destructive"
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const updateGoats = (stats: Partial<AnimalStats>) => {
-    setData(prev => {
+    fetchData();
+  }, []);
+
+  const updateGoats = async (stats: Partial<AnimalStats>) => {
+    try {
       const updated = {
-        ...prev,
-        goats: { ...prev.goats, ...stats }
+        ...data,
+        goats: { ...data.goats, ...stats }
       };
       
       // Validation
@@ -38,7 +63,7 @@ export const QurbanProvider: React.FC<{ children: ReactNode }> = ({ children }) 
           description: "Jumlah keluar kandang tidak boleh melebihi total kambing",
           variant: "destructive"
         });
-        return prev;
+        return;
       }
       
       if (updated.goats.slaughtered > updated.goats.outOfPen) {
@@ -47,23 +72,30 @@ export const QurbanProvider: React.FC<{ children: ReactNode }> = ({ children }) 
           description: "Jumlah disembelih tidak boleh melebihi jumlah keluar kandang",
           variant: "destructive"
         });
-        return prev;
+        return;
       }
+      
+      const savedData = await saveData(updated);
+      setData(savedData);
       
       toast({
         title: "Data Berhasil Diperbarui",
         description: "Data kambing telah diperbarui",
       });
-      
-      return updated;
-    });
+    } catch (error) {
+      toast({
+        title: "Error Updating Data",
+        description: "Failed to update goat data.",
+        variant: "destructive"
+      });
+    }
   };
 
-  const updateSheep = (stats: Partial<AnimalStats>) => {
-    setData(prev => {
+  const updateSheep = async (stats: Partial<AnimalStats>) => {
+    try {
       const updated = {
-        ...prev,
-        sheep: { ...prev.sheep, ...stats }
+        ...data,
+        sheep: { ...data.sheep, ...stats }
       };
       
       // Validation
@@ -73,7 +105,7 @@ export const QurbanProvider: React.FC<{ children: ReactNode }> = ({ children }) 
           description: "Jumlah keluar kandang tidak boleh melebihi total domba",
           variant: "destructive"
         });
-        return prev;
+        return;
       }
       
       if (updated.sheep.slaughtered > updated.sheep.outOfPen) {
@@ -82,23 +114,30 @@ export const QurbanProvider: React.FC<{ children: ReactNode }> = ({ children }) 
           description: "Jumlah disembelih tidak boleh melebihi jumlah keluar kandang",
           variant: "destructive"
         });
-        return prev;
+        return;
       }
+      
+      const savedData = await saveData(updated);
+      setData(savedData);
       
       toast({
         title: "Data Berhasil Diperbarui",
         description: "Data domba telah diperbarui",
       });
-      
-      return updated;
-    });
+    } catch (error) {
+      toast({
+        title: "Error Updating Data",
+        description: "Failed to update sheep data.",
+        variant: "destructive"
+      });
+    }
   };
 
-  const updateCows = (stats: Partial<AnimalStats>) => {
-    setData(prev => {
+  const updateCows = async (stats: Partial<AnimalStats>) => {
+    try {
       const updated = {
-        ...prev,
-        cows: { ...prev.cows, ...stats }
+        ...data,
+        cows: { ...data.cows, ...stats }
       };
       
       // Validation
@@ -108,7 +147,7 @@ export const QurbanProvider: React.FC<{ children: ReactNode }> = ({ children }) 
           description: "Jumlah keluar kandang tidak boleh melebihi total sapi",
           variant: "destructive"
         });
-        return prev;
+        return;
       }
       
       if (updated.cows.slaughtered > updated.cows.outOfPen) {
@@ -117,22 +156,29 @@ export const QurbanProvider: React.FC<{ children: ReactNode }> = ({ children }) 
           description: "Jumlah disembelih tidak boleh melebihi jumlah keluar kandang",
           variant: "destructive"
         });
-        return prev;
+        return;
       }
+      
+      const savedData = await saveData(updated);
+      setData(savedData);
       
       toast({
         title: "Data Berhasil Diperbarui",
         description: "Data sapi telah diperbarui",
       });
-      
-      return updated;
-    });
+    } catch (error) {
+      toast({
+        title: "Error Updating Data",
+        description: "Failed to update cow data.",
+        variant: "destructive"
+      });
+    }
   };
 
-  const updatePackaging = (total: number | undefined, completed: number | undefined) => {
-    setData(prev => {
-      const newTotal = total !== undefined ? total : prev.packaging.total;
-      const newCompleted = completed !== undefined ? completed : prev.packaging.completed;
+  const updatePackaging = async (total: number | undefined, completed: number | undefined) => {
+    try {
+      const newTotal = total !== undefined ? total : data.packaging.total;
+      const newCompleted = completed !== undefined ? completed : data.packaging.completed;
       
       // Validation
       if (newCompleted > newTotal) {
@@ -141,25 +187,34 @@ export const QurbanProvider: React.FC<{ children: ReactNode }> = ({ children }) 
           description: "Jumlah packing selesai tidak boleh melebihi total packing",
           variant: "destructive"
         });
-        return prev;
+        return;
       }
+      
+      const updated = {
+        ...data,
+        packaging: { total: newTotal, completed: newCompleted }
+      };
+      
+      const savedData = await saveData(updated);
+      setData(savedData);
       
       toast({
         title: "Data Berhasil Diperbarui",
         description: "Data packing telah diperbarui",
       });
-      
-      return {
-        ...prev,
-        packaging: { total: newTotal, completed: newCompleted }
-      };
-    });
+    } catch (error) {
+      toast({
+        title: "Error Updating Data",
+        description: "Failed to update packaging data.",
+        variant: "destructive"
+      });
+    }
   };
 
-  const updateDistribution = (total: number | undefined, completed: number | undefined) => {
-    setData(prev => {
-      const newTotal = total !== undefined ? total : prev.distribution.total;
-      const newCompleted = completed !== undefined ? completed : prev.distribution.completed;
+  const updateDistribution = async (total: number | undefined, completed: number | undefined) => {
+    try {
+      const newTotal = total !== undefined ? total : data.distribution.total;
+      const newCompleted = completed !== undefined ? completed : data.distribution.completed;
       
       // Validation
       if (newCompleted > newTotal) {
@@ -168,34 +223,52 @@ export const QurbanProvider: React.FC<{ children: ReactNode }> = ({ children }) 
           description: "Jumlah distribusi selesai tidak boleh melebihi total distribusi",
           variant: "destructive"
         });
-        return prev;
+        return;
       }
+      
+      const updated = {
+        ...data,
+        distribution: { total: newTotal, completed: newCompleted }
+      };
+      
+      const savedData = await saveData(updated);
+      setData(savedData);
       
       toast({
         title: "Data Berhasil Diperbarui",
         description: "Data distribusi telah diperbarui",
       });
-      
-      return {
-        ...prev,
-        distribution: { total: newTotal, completed: newCompleted }
-      };
-    });
+    } catch (error) {
+      toast({
+        title: "Error Updating Data",
+        description: "Failed to update distribution data.",
+        variant: "destructive"
+      });
+    }
   };
 
-  const resetToDefaults = () => {
-    const defaultData = loadData();
-    setData(defaultData);
-    toast({
-      title: "Data Direset",
-      description: "Semua data telah direset ke nilai default",
-    });
+  const resetToDefaults = async () => {
+    try {
+      const defaultData = await resetData();
+      setData(defaultData);
+      toast({
+        title: "Data Direset",
+        description: "Semua data telah direset ke nilai default",
+      });
+    } catch (error) {
+      toast({
+        title: "Error Resetting Data",
+        description: "Failed to reset data to defaults.",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
     <QurbanContext.Provider
       value={{
         data,
+        isLoading,
         updateGoats,
         updateSheep,
         updateCows,

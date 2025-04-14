@@ -6,9 +6,44 @@ import StatCard from "@/components/StatCard";
 import ProcessCard from "@/components/ProcessCard";
 import Clock from "@/components/Clock";
 import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Dashboard = () => {
-  const { data } = useQurban();
+  const { data, isLoading } = useQurban();
+
+  if (isLoading) {
+    return (
+      <AppLayout>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="md:col-span-1">
+            <Card>
+              <CardContent className="pt-6">
+                <h2 className="text-xl font-bold mb-4 text-center">Status Penyembelihan</h2>
+                <div className="flex items-center justify-center h-[300px]">
+                  <Skeleton className="h-[250px] w-[250px] rounded-full" />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+          <div className="md:col-span-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[...Array(5)].map((_, i) => (
+                <Card key={i}>
+                  <CardContent className="pt-6">
+                    <Skeleton className="h-6 w-[200px] mb-4" />
+                    <Skeleton className="h-4 w-[150px] mb-2" />
+                    <Skeleton className="h-4 w-full mb-4" />
+                    <Skeleton className="h-4 w-[150px] mb-2" />
+                    <Skeleton className="h-4 w-full" />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </div>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>

@@ -9,7 +9,63 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      qurban_data: {
+        Row: {
+          completed_distribution: number
+          completed_packaging: number
+          created_at: string
+          id: string
+          out_of_pen_cows: number
+          out_of_pen_goats: number
+          out_of_pen_sheep: number
+          slaughtered_cows: number
+          slaughtered_goats: number
+          slaughtered_sheep: number
+          total_cows: number
+          total_distribution: number
+          total_goats: number
+          total_packaging: number
+          total_sheep: number
+          updated_at: string
+        }
+        Insert: {
+          completed_distribution?: number
+          completed_packaging?: number
+          created_at?: string
+          id?: string
+          out_of_pen_cows?: number
+          out_of_pen_goats?: number
+          out_of_pen_sheep?: number
+          slaughtered_cows?: number
+          slaughtered_goats?: number
+          slaughtered_sheep?: number
+          total_cows?: number
+          total_distribution?: number
+          total_goats?: number
+          total_packaging?: number
+          total_sheep?: number
+          updated_at?: string
+        }
+        Update: {
+          completed_distribution?: number
+          completed_packaging?: number
+          created_at?: string
+          id?: string
+          out_of_pen_cows?: number
+          out_of_pen_goats?: number
+          out_of_pen_sheep?: number
+          slaughtered_cows?: number
+          slaughtered_goats?: number
+          slaughtered_sheep?: number
+          total_cows?: number
+          total_distribution?: number
+          total_goats?: number
+          total_packaging?: number
+          total_sheep?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
