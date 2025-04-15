@@ -4,7 +4,7 @@
 Aplikasi web untuk monitoring proses penyembelihan hewan qurban dan distribusi daging.
 
 ## Live Preview
-https://preview--qurban-tracker-dashboard-system.lovable.app
+
 
 ## Features
 
@@ -250,4 +250,4 @@ Untuk penggunaan offline tanpa koneksi internet, Anda perlu memodifikasi aplikas
 
 ## Remix
 
-https://lovable.dev/projects/d53f6851-a174-4f3b-ad11-33dbc90b95c3
+
