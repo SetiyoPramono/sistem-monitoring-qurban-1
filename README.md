@@ -240,14 +240,5 @@ Untuk penggunaan offline tanpa koneksi internet, Anda perlu memodifikasi aplikas
 - Pastikan database Supabase dikonfigurasi dengan benar dan dapat diakses dari aplikasi
 - Backup data secara berkala untuk menghindari kehilangan data
 
-## Screenshot
-
-[Screenshot aplikasi akan ditampilkan di sini]
-
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
-
-## Remix
 
 
