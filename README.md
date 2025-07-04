@@ -4,7 +4,7 @@
 Aplikasi web untuk monitoring proses penyembelihan hewan qurban dan distribusi daging.
 
 ## Live Preview
-
+<img src="./demo-crm.png" alt="Demo App" >
 
 ## Features
 
@@ -239,6 +239,4 @@ Untuk penggunaan offline tanpa koneksi internet, Anda perlu memodifikasi aplikas
 - Untuk penggunaan produksi, pastikan untuk mengganti kredensial admin dengan nilai yang aman
 - Pastikan database Supabase dikonfigurasi dengan benar dan dapat diakses dari aplikasi
 - Backup data secara berkala untuk menghindari kehilangan data
-
-
 
